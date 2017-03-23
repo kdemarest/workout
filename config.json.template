@@ -1,0 +1,7 @@
+{
+	"sitePath": "../site",
+	"port": 3333,
+	"buildCommand": "cd .. && node build/assemble.js src site",
+	"mandrillApiKey": "",
+	"contactEmail": "ken@appsoma.com"
+}
