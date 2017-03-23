@@ -8,21 +8,61 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/annyang/2.6.0/annyang.js"></script>
 
 <script>
-// file:///Users/ken/code/workout/index.html
+// To run: node app.js
+// Then visit: localhost:4444
 
+let annyangEvents = {
+	start: 1,
+	soundstart: 1,
+	error: 1,
+	errorNetwork: 1,
+	errorPermissionBlocked: 1,
+	errorPermissionDenied: 1,
+	end: 1,
+	result: 1,
+	resultMatch: 1,
+	resultNoMatch: 1
+};
+
+var listenState = 0;
 function say(message) {
 	if( typeof message !== 'string' && typeof message !== 'number' ) {
 		$('#statusError').html("invalid message ["+message+"]");
 		return;
 	}
-	responsiveVoice.speak( ''+message, "UK English Male" );
+	responsiveVoice.speak(
+		''+message,
+		"UK English Male",
+		{
+			onstart: function() {
+				annyang.pause();
+				listenState = 1;
+				$('#statusError').text("listenState="+listenState);
+			},
+			onend: function() {
+				listenState = 0;
+				annyang.resume();
+				$('#statusError').text("listenState="+listenState);
+			},
+			onerror: function(arg) {
+				$('#statusError').text("speech error: "+arg);
+			},
+			onpause: function() {
+				$('#statusError').text("speech pause");
+			},
+			onresume: function() {
+				$('#statusError').text("speech resume");
+			}
+		}
+	);
 }
 
 function run() {
 	var state = { index:-1, duration:0, remaining:0, paused: false, text:""};
 	function tick() {
+		$("#statusListening").html( listenState>0 ? "||" : annyang.isListening() ? "|>" : "-" );
 		if( state.paused ) {
-			$('#statusPrompt').html("Waiting for you to say 'GO'");
+			$('#statusPrompt').html("Say 'resume workout' to continue.");
 			return;
 		}
 		if( state.remaining<=0 || state.remaining=='*' ) {
@@ -49,26 +89,38 @@ function run() {
 		}
 	}
 
+	function setPause(newState) {
+		if( state.paused != newState ) {
+			state.paused = newState;
+			say( state.paused ? 'stopping' : 'resuming' );
+			tick();
+		}
+	}
+
+	$(document).keypress(function(event) {
+		if( event.which == 32 ) {
+			setPause( !state.paused );
+		}
+	});
 
 	var commands = {
 		'resume (workout)': function() {
-			state.paused = false;
-			say('resuming');
-			tick();
+			setPause(false);
 		},
 		'pause (workout)': function() {
-			state.paused = true;
-			tick();
-			say('stopping');
+			setPause(true);
 		},
 		'stop (workout)': function() {
-			state.paused = true;
-			tick();
-			say('stopping');
+			setPause(true);
 		}
 	};
 	annyang.addCommands(commands);
-	annyang.start();
+	$.each( annyangEvents, function(eventName,value) {
+		annyang.addCallback(eventName,function(arg) {
+			console.log("A "+eventName+": "+JSON.stringify(arg));
+		});
+	});
+	annyang.start(); //{autoRestart:false, continuous: false});
 	annyang.debug(true);
 
 	var workout = $('#workout').text();
@@ -102,7 +154,7 @@ $(document).ready(function() {
 </h2>
 <h2 id="statusPrompt">
 </h2>
-<h2 id="statusHeard">
+<h2><span id=statusListening></span><span id="statusHeard"></span>
 </h2>
 <div id="statusError" style="color:red;">
 </div>
