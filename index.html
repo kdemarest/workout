@@ -97,9 +97,22 @@ function run() {
 		}
 	}
 
-	$(document).keypress(function(event) {
-		if( event.which == 32 ) {
+	$(document).keydown(function(event) {
+		if( event.which == 32 ) { // space
 			setPause( !state.paused );
+		}
+		if( event.keyCode == 83 || event.keyCode == 39 ) { // s or right arrow
+			state.remaining = 0;
+			if( state.paused ) {
+				setPause(false);
+			}
+		}
+		if( event.keyCode == 37) { // left arrow
+			state.remaining = 0;
+			state.index -= 2;
+			if( state.paused ) {
+				setPause(false);
+			}
 		}
 	});
 
@@ -159,8 +172,7 @@ $(document).ready(function() {
 <div id="statusError" style="color:red;">
 </div>
 <div id="workout" style="display:none;">
-* test
-10 Start warm up
+* Start warm up
 30 jump rope 
 30 jumping jacks
 15 prisoner lunge left
@@ -171,7 +183,7 @@ $(document).ready(function() {
 40 torso swings right
 60 leg scissors horizontal
 60 leg scissiors vertical
-10 Start workout
+* Start workout
 * 8 beginner shrimps left
 * 8 beginner shrimps right
 90 wait
@@ -222,7 +234,7 @@ $(document).ready(function() {
 45 legs to ceiling
 45 elbows alternate to knees
 30 curls
-10 Start Stretching
+* Start Stretching
 30 piriformis cross-legged left
 30 piriformis cross-legged right
 30 piriformis cross-legged left
