@@ -7,6 +7,13 @@
 <script src="http://code.responsivevoice.org/responsivevoice.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/annyang/2.6.0/annyang.js"></script>
 
+<style>
+#list {
+	width:300px;
+	overflow-y: scroll;
+}
+</style>
+
 <script>
 // To run: node app.js
 // Then visit: localhost:4444
@@ -59,6 +66,24 @@ function say(message) {
 
 function run() {
 	var state = { index:-1, duration:0, remaining:0, paused: false, text:""};
+
+	function start(index) {
+		state.index = index;
+		if( state.index >= list.length ) {
+			say("workout complete. Good job.");
+			delete handle;
+			return;
+		}
+		var part = list[state.index].split(' ');
+		state.duration = part.shift();
+		state.remaining = state.duration;
+		state.paused = state.remaining == '*';
+		state.text = part.join(' ');
+		$('#statusText').html(state.text);
+		$('#statusPrompt').html(state.remaining);
+		say(state.text);
+	}
+
 	function tick() {
 		$("#statusListening").html( listenState>0 ? "||" : annyang.isListening() ? "|>" : "-" );
 		if( state.paused ) {
@@ -66,20 +91,7 @@ function run() {
 			return;
 		}
 		if( state.remaining<=0 || state.remaining=='*' ) {
-			state.index += 1;
-			if( state.index >= list.length ) {
-				say("workout complete. Good job.");
-				delete handle;
-				return;
-			}
-			var part = list[state.index].split(' ');
-			state.duration = part.shift();
-			state.remaining = state.duration;
-			state.paused = state.remaining == '*';
-			state.text = part.join(' ');
-			$('#statusText').html(state.text);
-			$('#statusPrompt').html(state.remaining);
-			say(state.text);
+			start(state.index+1);
 			return;
 		}
 		state.remaining -= 1;
@@ -97,22 +109,37 @@ function run() {
 		}
 	}
 
+	function advance() {
+		state.remaining = 0;
+		if( state.paused ) {
+			setPause(false);
+		}
+	}
+
+	function rewind() {
+		state.remaining = 0;
+		state.index -= 2;
+		if( state.paused ) {
+			setPause(false);
+		}
+	}
+
+	function jumpTo(n) {
+		start(n);
+		if( state.paused ) {
+			setPause(false);
+		}
+	}
+
 	$(document).keydown(function(event) {
 		if( event.which == 32 ) { // space
 			setPause( !state.paused );
 		}
 		if( event.keyCode == 83 || event.keyCode == 39 ) { // s or right arrow
-			state.remaining = 0;
-			if( state.paused ) {
-				setPause(false);
-			}
+			advance();
 		}
 		if( event.keyCode == 37) { // left arrow
-			state.remaining = 0;
-			state.index -= 2;
-			if( state.paused ) {
-				setPause(false);
-			}
+			rewind();
 		}
 	});
 
@@ -125,6 +152,9 @@ function run() {
 		},
 		'stop (workout)': function() {
 			setPause(true);
+		},
+		'skip (workout)': function() {
+			setPause(true);
 		}
 	};
 	annyang.addCommands(commands);
@@ -136,20 +166,41 @@ function run() {
 	annyang.start(); //{autoRestart:false, continuous: false});
 	annyang.debug(true);
 
-	var workout = $('#workout').text();
-	var listRaw = workout.trim().split('\n');
-	var list = [];
-	var timeTotal = 0;
-	$.each(listRaw,function(i,line) {
-		if( line.trim() !== '' ) {
-			list.push(line);
-			var part = line.split(' ',1);
-			timeTotal += part[0] == '*' ? 30 : parseInt(part[0]);
-		}
-	});
-	var timeFormatted = new Date(null);
-	timeFormatted.setSeconds(timeTotal); // specify value for SECONDS here
-	$('#statusTotal').html(timeFormatted.toISOString().substr(11, 8));
+	let list = [];
+	let timeTotal = 0;
+
+	function calcList() {
+		var workout = $('#workout').text();
+		var listRaw = workout.trim().split('\n');
+		$.each(listRaw,function(i,line) {
+			if( line.trim() !== '' ) {
+				list.push(line);
+				var part = line.split(' ',1);
+				timeTotal += part[0] == '*' ? 30 : parseInt(part[0]);
+			}
+		});
+	}
+
+	function showTimeTotal() {
+		let timeFormatted = new Date(null);
+		timeFormatted.setSeconds(timeTotal); // specify value for SECONDS here
+		$('#statusTotal').html(timeFormatted.toISOString().substr(11, 8));
+	}
+
+	function showList() {
+		$.each(list,function(index,line) {
+			$("<div><a href='javascript:void 0'>"+line+"</a></div>")
+				.appendTo('#list')
+				.click(function(evt) {
+					jumpTo(index);
+				});
+		});
+	}
+
+	calcList();
+	showTimeTotal();
+	showList();
+
 	var handle = setInterval(tick,1000);
 }
 
@@ -161,15 +212,14 @@ $(document).ready(function() {
 </head>
 <body>
 <h1>Workout</h1>
-<h2 id="statusTotal">
-</h2>
-<h2 id="statusText">
-</h2>
-<h2 id="statusPrompt">
-</h2>
-<h2><span id=statusListening></span><span id="statusHeard"></span>
-</h2>
+<div><b>Est Time: <span id="statusTotal"></span></b></div>
+<div id="statusText"></div>
+<div id="statusPrompt"></div>
+<div><span id=statusListening></span><span id="statusHeard"></span>
+</div>
 <div id="statusError" style="color:red;">
+</div>
+<div id="list">
 </div>
 <div id="workout" style="display:none;">
 * Start warm up
