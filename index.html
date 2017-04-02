@@ -1,5 +1,6 @@
 <html>
 <head>
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.6/css/bootstrap.min.css" integrity="sha384-rwoIResjU2yc3z8GV/NPeZWAv56rSmLldC3R/AZzGRnGxQQKnKkoFVhFQhNUwEyJ" crossorigin="anonymous">
 <script
 	src="https://code.jquery.com/jquery-3.1.1.js"
 	integrity="sha256-16cdPddA6VdVInumRGo6IbivbERE8p7CQR3HzTBuELA="
@@ -8,9 +9,64 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/annyang/2.6.0/annyang.js"></script>
 
 <style>
-#list {
+body {
+	margin:6px;
+}
+table td {
+	vertical-align: top;
+}
+#header {
+	width: 300px;
+	float: left;
+}
+#currentExercise, #allExercise {
+	font-size:20px;
+	margin-bottom: 6px;
+}
+#statusText {
+	font-size:24px;
+	margin-bottom: 6px;
+}
+#statusPrompt {
+	margin-top: 6px;
+	margin-bottom: 6px;
+	font-style: italic;
+}
+.lineItem {
+	width:100%;
+	cursor: pointer;
+}
+.lineItem:hover {
+	width:100%;
+	background: #eeeeff;
+}
+.lineCurrent {
+	background: #ccccff;
+}
+#col2 {
 	width:300px;
+	height:90%;
+}
+#col3 {
+	text-align: center;
+	width:300px;
+	margin-top:30px;
+}
+#list {
 	overflow-y: scroll;
+}
+#timeLeft {
+	font-size: 160px;
+	font-family: monospace;
+}
+#listening {
+	display:none;
+}
+#speech {
+	display:none;
+}
+#timeTable {
+	margin-top: 60px;
 }
 </style>
 
@@ -44,21 +100,21 @@ function say(message) {
 			onstart: function() {
 				annyang.pause();
 				listenState = 1;
-				$('#statusError').text("listenState="+listenState);
+				$('#speech').text("listenState="+listenState);
 			},
 			onend: function() {
 				listenState = 0;
 				annyang.resume();
-				$('#statusError').text("listenState="+listenState);
+				$('#speech').text("listenState="+listenState);
 			},
 			onerror: function(arg) {
 				$('#statusError').text("speech error: "+arg);
 			},
 			onpause: function() {
-				$('#statusError').text("speech pause");
+				$('#speech').text("speech pause");
 			},
 			onresume: function() {
-				$('#statusError').text("speech resume");
+				$('#speech').text("speech resume");
 			}
 		}
 	);
@@ -66,12 +122,14 @@ function say(message) {
 
 function run() {
 	var state = { index:-1, duration:0, remaining:0, paused: false, text:""};
+	let tickHandle;
 
 	function start(index) {
 		state.index = index;
 		if( state.index >= list.length ) {
+			clearInterval(tickHandle);
 			say("workout complete. Good job.");
-			delete handle;
+			delete tickHandle;
 			return;
 		}
 		var part = list[state.index].split(' ');
@@ -81,10 +139,20 @@ function run() {
 		state.text = part.join(' ');
 		$('#statusText').html(state.text);
 		$('#statusPrompt').html(state.remaining);
+		$('#timeLeft').html(state.remaining);
 		say(state.text);
+		$('.lineCurrent').removeClass('lineCurrent');
+		let scrollPos = $("#list").scrollTop() - $("#list").offset().top + $(".line"+state.index).offset().top;
+//		$('#statusError').html(scrollPos);
+		$('.line'+state.index).addClass('lineCurrent');
+		$('#list').animate({
+        	scrollTop: scrollPos,
+	    }, 500);
 	}
 
 	function tick() {
+		timeElapsed += 1;
+		showTime();
 		$("#statusListening").html( listenState>0 ? "||" : annyang.isListening() ? "|>" : "-" );
 		if( state.paused ) {
 			$('#statusPrompt').html("Say 'resume workout' to continue.");
@@ -96,6 +164,8 @@ function run() {
 		}
 		state.remaining -= 1;
 		$('#statusPrompt').html(state.remaining);
+		$('#timeLeft').html(state.remaining);
+
 		if( state.remaining <= 5 && state.remaining >= 1 ) {
 			say( state.remaining );
 		}
@@ -111,24 +181,15 @@ function run() {
 
 	function advance() {
 		state.remaining = 0;
-		if( state.paused ) {
-			setPause(false);
-		}
 	}
 
 	function rewind() {
 		state.remaining = 0;
 		state.index -= 2;
-		if( state.paused ) {
-			setPause(false);
-		}
 	}
 
 	function jumpTo(n) {
 		start(n);
-		if( state.paused ) {
-			setPause(false);
-		}
 	}
 
 	$(document).keydown(function(event) {
@@ -167,7 +228,8 @@ function run() {
 	annyang.debug(true);
 
 	let list = [];
-	let timeTotal = 0;
+	let timeEstimated = 0;
+	let timeElapsed = 0;
 
 	function calcList() {
 		var workout = $('#workout').text();
@@ -176,20 +238,22 @@ function run() {
 			if( line.trim() !== '' ) {
 				list.push(line);
 				var part = line.split(' ',1);
-				timeTotal += part[0] == '*' ? 30 : parseInt(part[0]);
+				timeEstimated += part[0] == '*' ? 30 : parseInt(part[0]);
 			}
 		});
 	}
 
-	function showTimeTotal() {
+	function showTime() {
 		let timeFormatted = new Date(null);
-		timeFormatted.setSeconds(timeTotal); // specify value for SECONDS here
-		$('#statusTotal').html(timeFormatted.toISOString().substr(11, 8));
+		timeFormatted.setSeconds(timeElapsed); // specify value for SECONDS here
+		$('#timeElapsed').html(timeFormatted.toISOString().substr(11, 8));
+		timeFormatted.setSeconds(timeEstimated); // specify value for SECONDS here
+		$('#timeEstimated').html(timeFormatted.toISOString().substr(11, 8));
 	}
 
 	function showList() {
 		$.each(list,function(index,line) {
-			$("<div><a href='javascript:void 0'>"+line+"</a></div>")
+			$("<div class='lineItem line"+index+"'>"+line+"</div>")
 				.appendTo('#list')
 				.click(function(evt) {
 					jumpTo(index);
@@ -198,10 +262,10 @@ function run() {
 	}
 
 	calcList();
-	showTimeTotal();
+	showTime();
 	showList();
 
-	var handle = setInterval(tick,1000);
+	tickHandle = setInterval(tick,1000);
 }
 
 $(document).ready(function() {
@@ -211,17 +275,68 @@ $(document).ready(function() {
 </script>
 </head>
 <body>
-<h1>Workout</h1>
-<div><b>Est Time: <span id="statusTotal"></span></b></div>
-<div id="statusText"></div>
-<div id="statusPrompt"></div>
-<div><span id=statusListening></span><span id="statusHeard"></span>
-</div>
-<div id="statusError" style="color:red;">
-</div>
-<div id="list">
-</div>
+<table>
+<tr>
+<td>
+	<div id="header">
+	<div id="currentExercise">Current Exercise</div>
+	<div id="statusText"></div>
+	<div id="statusPrompt"></div>
+	<table id='timeTable'>
+	<tr><td><samp id="timeElapsed"></samp></td><td>elapsed</td></tr>
+	<tr><td><samp id="timeEstimated"></samp></td><td>of estimated total</td></tr>
+	</table>
+	<div id='listening'>
+	<span id=statusListening></span><span id="statusHeard"></span>
+	</div>
+	<div id="speech" style="color:green;"></div>
+	<div id="statusError" style="color:red;"></div>
+	</div>
+</td><td>
+	<div id="col2">
+	<div id="allExercise">ExerciseList</div>
+	<div id="list"></div>
+	</div>
+</td><td>
+	<div id="col3">
+	<div id="timeLeft"></div>
+	</div>
+</td>
+</tr>
+</table>
 <div id="workout" style="display:none;">
+* Leg Stretches
+30 piriformis cross-legged left
+30 piriformis cross-legged right
+30 piriformis cross-legged left
+30 piriformis cross-legged right
+30 piriformis cross-legged left
+30 piriformis cross-legged right
+10 Now stand
+30 calf left
+6 switch
+30 calf right
+6 switch
+30 calf left
+6 switch
+30 calf right
+6 now bent knees
+30 calf left bent knee
+6 switch
+30 calf right bent knee
+6 switch
+30 calf left bent knee
+6 switch
+30 calf right bent knee
+10 sit near a doorway
+30 hamstring leg on wall left
+6 switch
+30 hamstring leg on wall right
+6 switch
+30 hamstring leg on wall left
+6 switch
+30 hamstring leg on wall right
+
 * Start warm up
 30 jump rope 
 30 jumping jacks
@@ -231,7 +346,10 @@ $(document).ready(function() {
 20 arm rotations counter clockwise
 40 torso swings left
 40 torso swings right
-60 leg scissors horizontal
+8 now sit
+20 leg scissors horizontal
+8 now stand
+
 * Start workout
 * 8 beginner shrimps left
 * 8 beginner shrimps right
@@ -241,13 +359,13 @@ $(document).ready(function() {
 90 wait
 * 8 beginner shrimps left
 * 8 beginner shrimps right
-90 wait
+30 brief wait then pullups
 * 8 pullups legs on chair
 90 wait
 * 8 pullups legs on chair
 90 wait
 * 8 pullups legs on chair
-90 wait
+30 brief wait then diamond pushups
 * 8 pike diamond pushups
 60 wait
 * 8 pike diamond pushups
@@ -259,7 +377,7 @@ $(document).ready(function() {
 * 8 pushups
 90 wait
 * 8 pushups
-90 wait
+60 wait then dips
 * 5 dips
 90 wait
 * 5 dips
@@ -271,7 +389,9 @@ $(document).ready(function() {
 * 8 inverted rows bent leg
 90 wait
 * 8 inverted rows bent leg
-90 wait
+60 wait
+
+* Stomach workout
 45 basic crunches
 45 right elbow to knee
 45 left elbow to knee
@@ -283,36 +403,104 @@ $(document).ready(function() {
 45 legs to ceiling
 45 elbows alternate to knees
 30 curls
-* Start Stretching
-30 piriformis cross-legged left
-30 piriformis cross-legged right
-30 piriformis cross-legged left
-30 piriformis cross-legged right
-30 piriformis cross-legged left
-30 piriformis cross-legged right
-30 calf left
-6 switch
-30 calf right
-6 switch
-30 calf left
-6 switch
-30 calf right
-6 pause
-30 calf left bent knee
-6 switch
-30 calf right bent knee
-6 switch
-30 calf left bent knee
-6 switch
-30 calf right bent knee
-10 sit near a doorway
-30 hamstring leg on wall left
-6 pause
-30 hamstring leg on wall right
-6 pause
-30 hamstring leg on wall left
-6 pause
-30 hamstring leg on wall right
+
+10 Hip workout, lie on your left side
+60 ten leg lifts, hold for five seconds
+10 wait
+60 ten leg lifts, hold for five seconds
+10 wait
+60 ten leg lifts, hold for five seconds
+10 Switch to your right side
+60 ten leg lifts, hold for five seconds
+10 wait
+60 ten leg lifts, hold for five seconds
+10 wait
+60 ten leg lifts, hold for five seconds
+10 now dog legs, with five second hold
+60 ten dog legs
+10 wait
+60 ten dog legs
+10 other side
+60 ten dog legs
+10 wait
+60 ten dog legs
+10 now clam shells with five second hold
+60 ten clam shells
+10 wait
+60 ten clam shells
+10 wait
+60 ten clam shells
+10 switch sides
+60 ten clam shells
+10 wait
+60 ten clam shells
+10 wait
+60 ten clam shells
+
+10 now downward dog
+60 alternate left and right calf stretches
+10 wait
+60 alternate left and right calf stretches
+10 wait
+60 alternate left and right calf stretches
+10 now inch worms
+60 inch along for a minute, baby
+60 get ready for ankle eversions
+
+10 rig for ankle flexing away
+24 ten ankle flex away
+10 wait
+24 ten ankle flex away
+10 wait
+24 ten ankle flex away
+10 switch feet
+24 ten ankle flex away
+10 wait
+24 ten ankle flex away
+10 wait
+24 ten ankle flex away
+
+10 rig for ankle flexing right
+20 ten ankle flex right
+10 wait
+20 ten ankle flex right
+10 wait
+20 ten ankle flex right
+10 switch feet
+20 ten ankle flex right
+10 wait
+20 ten ankle flex right
+10 wait
+20 ten ankle flex right
+
+10 rig for ankle flexing left
+20 ten ankle flex left
+10 wait
+20 ten ankle flex left
+10 wait
+20 ten ankle flex left
+10 switch feet
+20 ten ankle flex left
+10 wait
+20 ten ankle flex left
+10 wait
+20 ten ankle flex left
+
+10 rig for ankle flexing towards
+20 ten ankle flex towards
+10 wait
+20 ten ankle flex towards
+10 wait
+20 ten ankle flex towards
+10 switch feet
+20 ten ankle flex towards
+10 wait
+20 ten ankle flex towards
+10 wait
+20 ten ankle flex towards
+
+
+* Post Workout Stretches
 6 now sit
 20 groin
 6 pause
@@ -325,17 +513,12 @@ $(document).ready(function() {
 20 quad right
 6 pause
 20 quad left
-6 and stand
 30 overhead elbow left
-6 and switch
 30 overhead elbow right
-6 now shoulders
 30 shoulder right arm across body
-6 and switch
 30 shoulder left arm across body
-6 and the neck
 30 neck swivels
-10 done!
+1 done!
 </div>
 </body>
 </html>
