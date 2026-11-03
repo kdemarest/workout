@@ -1,0 +1,61 @@
+/* Shared page styles for every person's workout page. */
+:root {
+  --bg: #f6f5f2; --card: #ffffff; --text: #1d2026; --muted: #5f6672; --line: #dcdad4;
+  --accent: #1f6f5c; --accent-text: #ffffff; --stop: #b23a2e; --caution-bg: #fff4dc; --caution-line: #e2b04a;
+  --done: #9aa1ab;
+  color-scheme: light dark;
+}
+@media (prefers-color-scheme: dark) {
+  :root {
+    --bg: #14181f; --card: #1d222b; --text: #e9ebef; --muted: #a2a9b5; --line: #2f3542;
+    --accent: #3fae8f; --accent-text: #0d1512; --stop: #e0675a; --caution-bg: #2e2717; --caution-line: #b8892f;
+    --done: #5f6672;
+  }
+}
+* { box-sizing: border-box; }
+html, body { margin: 0; background: var(--bg); color: var(--text); }
+body { font: 16px/1.45 system-ui, -apple-system, "Segoe UI", Roboto, sans-serif; padding: 12px 16px 24px; max-width: 640px; margin: 0 auto; }
+header { display: flex; justify-content: space-between; align-items: baseline; gap: 8px; }
+h1 { font-size: 20px; margin: 0; }
+#week { color: var(--muted); font-size: 14px; text-align: right; }
+.nav { display: flex; gap: 8px; margin: 12px 0 6px; }
+select, .nav button { font: inherit; color: var(--text); background: var(--card); border: 1px solid var(--line); border-radius: 10px; min-height: 44px; }
+select { flex: 1; min-width: 0; padding: 0 10px; }
+.nav button { width: 48px; font-size: 20px; }
+#section-note { color: var(--muted); font-size: 13px; margin: 0 0 10px; }
+.card { background: var(--card); border: 1px solid var(--line); border-radius: 14px; padding: 14px; }
+h2 { font-size: 19px; margin: 0 0 2px; }
+#sets { color: var(--accent); font-weight: 600; margin: 0 0 8px; }
+#desc { margin: 0; }
+.note { margin: 10px 0 0; font-size: 15px; }
+#caution { background: var(--caution-bg); border-left: 4px solid var(--caution-line); padding: 8px 10px; border-radius: 6px; }
+#figure { margin: 12px 0 0; text-align: center; }
+#figure svg { width: 100%; max-width: 320px; height: auto; }
+#figure figcaption { color: var(--muted); font-size: 13px; }
+.fig-wall { fill: var(--line); stroke: var(--muted); }
+.fig-body { fill: var(--bg); stroke: var(--muted); stroke-width: 2; }
+.fig-arm { stroke: var(--text); stroke-width: 10; stroke-linecap: round; }
+.fig-joint { fill: var(--accent); }
+.fig-hand { fill: var(--accent); }
+.fig-arrow { fill: none; stroke: var(--stop); stroke-width: 3; stroke-linecap: round; stroke-linejoin: round; }
+.fig-label { fill: var(--muted); font-size: 12px; }
+.fig-strong { fill: var(--stop); font-weight: 700; }
+#tabs { display: flex; gap: 6px; margin: -4px 0 12px; }
+.tab { flex: 1; font: inherit; font-weight: 600; min-height: 40px; border-radius: 10px; border: 1px solid var(--line); background: var(--bg); color: var(--muted); }
+.tab[aria-selected="true"] { background: var(--accent); border-color: var(--accent); color: var(--accent-text); }
+.step.second { background: var(--bg); }
+.step.rest { border-style: dashed; color: var(--muted); }
+.timer { text-align: center; margin: 16px 0 8px; }
+#step-label { color: var(--muted); font-weight: 600; min-height: 1.4em; }
+#clock { font-size: clamp(64px, 22vw, 112px); font-weight: 700; font-variant-numeric: tabular-nums; line-height: 1.1; }
+.controls { display: flex; align-items: center; justify-content: center; gap: 14px; }
+.controls .adj { font: inherit; width: 64px; height: 52px; border-radius: 12px; border: 1px solid var(--line); background: var(--card); color: var(--text); }
+#go { font: 700 26px system-ui, sans-serif; width: 150px; height: 84px; border: 0; border-radius: 42px; background: var(--accent); color: var(--accent-text); touch-action: manipulation; }
+#go.running { background: var(--stop); color: #fff; }
+#adjust { color: var(--muted); font-size: 13px; min-height: 1.3em; margin-top: 6px; }
+#steps { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 14px; justify-content: center; }
+.step { font: inherit; font-size: 13px; padding: 6px 10px; border-radius: 999px; border: 1px solid var(--line); background: var(--card); color: var(--text); }
+.step.done { color: var(--done); text-decoration: line-through; }
+.step.active { border-color: var(--accent); box-shadow: inset 0 0 0 1px var(--accent); font-weight: 600; }
+.people { list-style: none; padding: 0; display: grid; gap: 10px; }
+.people a { display: block; padding: 16px; border-radius: 14px; background: var(--card); border: 1px solid var(--line); color: var(--text); font-size: 18px; font-weight: 600; text-decoration: none; }
