@@ -73,10 +73,10 @@ const WORKOUT_SECTIONS = [
             },
             {
                 name: "Prone Y and T raises",
-                sets: "1 × 10 of each",
-                desc: "Face down on a bed or floor. Y: arms overhead at 45°, thumbs up. T: arms straight out to the sides, thumbs up. Lift, hold 3 seconds, lower. No weight at first, then 0.5 L bottles.",
+                sets: "1 × 6 of each, 8-second holds",
+                desc: "Face down on a bed or floor. Y: arms overhead at 45°, thumbs up. T: arms straight out to the sides, thumbs up. Lift, hold 8 seconds, lower. Stop the set early if the shoulders creep up toward the ears, the low back arches to get the arms higher, or the left shoulder starts to hurt: a lower lift held well beats a high one held badly. No weight at first, then 0.5 L bottles.",
                 caution: "Pain-free range only. If the left thumb will not turn up in the T, do the left T palm down, with the arm angled a little toward the hips, and lift only until the arm is level with the body, not above it. If that still bothers the front of the shoulder, skip the left T. The same goes for the Y. Turning the thumb up needs outward rotation, which the external rotation exercise is building; retry thumb-up every 2 weeks.",
-                steps: () => steps(1, 60, { parts: ["Y raise", "T raise"] })
+                steps: () => steps(1, 75, { parts: ["Y raise", "T raise"] })
             }
         ]
     },
@@ -256,10 +256,10 @@ const WORKOUT_SECTIONS = [
             ),
             {
                 name: "Prone Y and T raises",
-                sets: "2 × 10 of each, 30 seconds' rest between rounds. Finisher",
-                desc: "Face down on a bed or floor. Y: arms overhead at 45°, thumbs up. T: arms straight out to the sides, thumbs up. Lift, hold 3 seconds, lower.",
+                sets: "2 × 6 of each, 8-second holds, 30 seconds' rest between rounds. Finisher",
+                desc: "Face down on a bed or floor. Y: arms overhead at 45°, thumbs up. T: arms straight out to the sides, thumbs up. Lift, hold 8 seconds, lower. Stop the set early if the shoulders creep up toward the ears, the low back arches to get the arms higher, or the left shoulder starts to hurt: a lower lift held well beats a high one held badly.",
                 caution: "Pain-free range only. If the left thumb will not turn up in the T, do the left T palm down, with the arm angled a little toward the hips, and lift only until the arm is level with the body, not above it. If that still bothers the front of the shoulder, skip the left T. The same goes for the Y. Turning the thumb up needs outward rotation, which the external rotation exercise is building; retry thumb-up every 2 weeks.",
-                steps: () => steps(2, 60, { parts: ["Y raise", "T raise"], rest: 30 })
+                steps: () => steps(2, 75, { parts: ["Y raise", "T raise"], rest: 30 })
             },
             {
                 name: "Farmer carry or hold",
