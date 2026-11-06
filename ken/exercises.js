@@ -62,7 +62,7 @@ const WORKOUT_SECTIONS = [
         ]
     },
     {
-        name: "Daily shoulder care",
+        name: "Day Off Shoulders",
         note: "On days without the main workout, about 5 minutes after the mobility. On main workout days, the workout covers these.",
         exercises: [
             {
@@ -84,26 +84,6 @@ const WORKOUT_SECTIONS = [
         name: "Left shoulder rehab",
         note: "Every day, about 5 minutes. Pain up to 3/10 is fine if it is back to normal by the next morning; if not, go back a stage. Move on only when the current stage is pain-free and its week has come.",
         exercises: [
-            {
-                name: "Stage 1, weeks 1–2: biceps isometric hold",
-                sets: "5 × 45 seconds, once or twice a day",
-                desc: "Sit at a table, left elbow bent 90° against your side, palm up. Press the forearm up into the underside of the table at about half effort. Rest 1 minute between holds.",
-                steps: () => steps(5, 45, { rest: 60 })
-            },
-            {
-                name: "Stage 2, weeks 3–6: slow lowering curl",
-                sets: "3 × 15, 1 minute's rest between sets, every other day; the Stage 1 hold on the days between",
-                desc: "Standing, elbow at your side, palm up, a 1.5–2 L bottle in the left hand. Lift it with help from the right hand, then lower it with the left arm alone in 3–4 seconds.",
-                progress: "At 3 × 15 easy, use 3–4 L in the jug.",
-                steps: () => steps(3, 90, { rest: 60 })
-            },
-            {
-                name: "Stage 3, weeks 7–12: full curl",
-                sets: "3 × 12, 1 minute's rest between sets, on main workout days",
-                desc: "The left arm joins the main workout's biceps curl, 2 seconds up and 3 seconds down, starting with 4–6 L in the jug even if the right arm uses more.",
-                progress: "Add 1 L when 3 × 12 is easy. Once this is pain-free, return to close-grip and full-depth pushups.",
-                steps: () => steps(3, 60, { rest: 60 })
-            },
             {
                 name: "Internal rotation (subscapularis), both sides",
                 sets: "Weeks 1–6: 5 × 30 seconds per side, daily, alternating sides, with 30 seconds' rest after each pair. Weeks 7–12: 2 × 15 per side, on main workout days",
@@ -132,6 +112,26 @@ const WORKOUT_SECTIONS = [
 </svg>`
                 },
                 steps: (week) => week <= 6 ? steps(5, 30, { sides: true, rest: 30 }) : steps(2, 75, { sides: true })
+            },
+            {
+                name: "Stage 1, weeks 1–2: biceps isometric hold",
+                sets: "5 × 45 seconds, once or twice a day",
+                desc: "Sit at a table, left elbow bent 90° against your side, palm up. Press the forearm up into the underside of the table at about half effort. Rest 1 minute between holds.",
+                steps: () => steps(5, 45, { rest: 60 })
+            },
+            {
+                name: "Stage 2, weeks 3–6: slow lowering curl",
+                sets: "3 × 15, 1 minute's rest between sets, every other day; the Stage 1 hold on the days between",
+                desc: "Standing, elbow at your side, palm up, a 1.5–2 L bottle in the left hand. Lift it with help from the right hand, then lower it with the left arm alone in 3–4 seconds.",
+                progress: "At 3 × 15 easy, use 3–4 L in the jug.",
+                steps: () => steps(3, 90, { rest: 60 })
+            },
+            {
+                name: "Stage 3, weeks 7–12: full curl",
+                sets: "3 × 12, 1 minute's rest between sets, on main workout days",
+                desc: "The left arm joins the main workout's biceps curl, 2 seconds up and 3 seconds down, starting with 4–6 L in the jug even if the right arm uses more.",
+                progress: "Add 1 L when 3 × 12 is easy. Once this is pain-free, return to close-grip and full-depth pushups.",
+                steps: () => steps(3, 60, { rest: 60 })
             }
         ]
     },
