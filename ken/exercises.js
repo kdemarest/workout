@@ -15,16 +15,16 @@ const WORKOUT_SECTIONS = [
             {
                 name: "Thoracic extension over a towel",
                 sets: "4 spots × 45 seconds",
-                desc: "Lie on your back over a tightly rolled towel or a 1 L bottle placed across the upper back at the bottom of the shoulder blades, hands behind the head, elbows pointing up, hips on the floor. Let the upper back drape over it and breathe out. Move it 2–3 cm higher for each spot, stopping below the neck. Keep it off the low back; this is for the upper back only.",
+                desc: "Lie on your back over a tightly rolled towel or a 1 L bottle placed across the upper back at the bottom of the shoulder blades, hands behind the head, elbows pointing up, hips on the floor. Let the upper back drape over it and breathe out. Rest your head in your hands and let them lower it toward the floor, chin slightly tucked; don't let it hang back, and put a folded towel under it if your neck strains. Move the towel 2–3 cm higher for each spot, stopping below the neck. Keep it off the low back; this is for the upper back only.",
                 progress: "From week 7, for the last 15 seconds of each spot, reach both straight arms overhead toward the floor.",
                 steps: () => [1, 2, 3, 4].map((n) => ({ label: `Spot ${n} of 4`, secs: 45 }))
             },
             {
                 name: "Open book",
-                sets: "2 × 8 per side, 3-second hold at the end",
+                sets: "1 × 8 per side, 10-second hold at the end",
                 desc: "Lie on your side, hips and knees bent 90°, a pillow under the head, a rolled towel squeezed between the knees, both arms straight out in front at shoulder height. Keep squeezing the towel, with both knees on the floor, and sweep the top arm up and over to the other side, turning the chest toward the ceiling and following the hand with your eyes. Turn from the upper back only: the hips stay stacked and must not roll back. Stop where the top hip starts to roll, even if the shoulder blade is still well off the floor. Breathe out at the end and let the arm sink, then return slowly.",
                 caution: "Weeks 1–6: when turning to open the left arm, bend the elbow and keep the hand on the chest, so the upper back turns without the arm being pulled behind the body.",
-                steps: () => steps(2, 50, { sides: true })
+                steps: () => steps(1, 120, { sides: true })
             },
             {
                 name: "Bed-edge lat and triceps stretch",

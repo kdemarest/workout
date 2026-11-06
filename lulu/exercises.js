@@ -24,17 +24,17 @@ const WORKOUT_SECTIONS = [
                 steps: () => steps(2, 45, { sides: true })
             },
             {
-                name: "Pigeon or 90/90",
+                name: "90/90",
                 sets: "2 × 30 seconds per side",
-                desc: "90/90: sit with the front leg bent 90° in front of you and the back leg bent 90° out to the side, sit tall and lean gently forward over the front shin. Pigeon: from hands and knees, bring one knee forward behind the same-side wrist, slide the other leg straight back, and lower the hips toward the floor, propped on a pillow if needed. Feeling it in the buttock is right.",
-                caution: "Stop if it pinches in the groin. The right leg as the back leg in 90/90 pinches; pigeon does not, so use pigeon for the right side.",
+                desc: "Sit with the front leg bent 90° in front of you and the back leg bent 90° out to the side, sit tall and lean gently forward over the front shin. Feeling it in the buttock is right.",
+                caution: "Stop if it pinches in the groin. No pigeon: it pinches.",
                 steps: () => steps(2, 30, { sides: true })
             },
             {
-                name: "Butterfly or frog",
+                name: "Butterfly",
                 sets: "2 × 30 seconds",
-                desc: "Butterfly: sit with the soles of the feet together and let the knees fall open, back tall. Frog: on hands and knees, slide the knees apart and sit gently back. Easy range only.",
-                caution: "Skip it if dysplasia is confirmed, since a loose joint doesn't need more slack.",
+                desc: "Sit with the soles of the feet together and let the knees fall open, back tall. Easy range only.",
+                caution: "It pinches slightly: stay well short of that, or skip it. No frog: it pinches. Skip butterfly too if dysplasia is confirmed, since a loose joint doesn't need more slack.",
                 steps: () => steps(2, 30)
             },
             {
@@ -272,7 +272,7 @@ const WORKOUT_SECTIONS = [
                 name: "90/90",
                 sets: "2 × 30 seconds per side, most days",
                 desc: "Front leg bent 90° in front, back leg bent 90° to the side; sit tall and lean gently over the front shin.",
-                caution: "If the right leg as the back leg pinches, use pigeon for that side.",
+                caution: "Stop if it pinches in the groin. No pigeon instead: it pinches.",
                 steps: () => steps(2, 30, { sides: true })
             }
         ]
