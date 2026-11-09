@@ -7,15 +7,155 @@
 
 const APP_TITLE = "Lulu Rehab";
 const CAUTION_LABEL = "Right hip"; // heading for each exercise's caution note
-const PLAN_START = "2026-10-10"; // Phase 1 started 10 October 2026
+const PLAN_START = "2026-11-07"; // "Protected hip" started 7 November 2026 (the paused plan started 10 October)
 
 const PAIN_RULE = "Pain up to 3/10 is fine if it has settled by the next morning; worse the next morning, drop back a step.";
 const HIP_RULE = "Avoid deep hip flexion past 90°, knee-to-chest, deep squats and forcing internal rotation.";
+const PROTECT_RULE = "Protected hip: no force through the right hip, from body weight or its own muscles. Stop if the groin pain gets worse, and tell the doctor.";
+const PAUSED = "Paused on 6 November while the hip is protected: don't restart until her doctor clears loading.";
 
 const WORKOUT_SECTIONS = [
     {
-        name: "Stretches",
-        note: `Daily, gentle, never into a groin pinch. ${HIP_RULE}`,
+        name: "Upper body",
+        note: `3 times a week on alternate days, seated or lying. With the core and left-leg work, about 40 minutes including rests. ${PROTECT_RULE}`,
+        exercises: [
+            {
+                name: "Chair push-ups",
+                sets: "3 × 8–12, lower over 2 seconds",
+                desc: "Sit in a sturdy chair with armrests, hands on the armrests beside the hips. Push down through the hands to straighten the arms and lift the bottom off the seat, then lower slowly. This is the crutch movement.",
+                caution: "Lift with the arms. The feet rest lightly on the floor: don't push up through the right leg.",
+                steps: () => steps(3, 40, { rest: 60 })
+            },
+            {
+                name: "Seated chest press",
+                sets: "3 × 10–12",
+                desc: "Seated, back supported. With a band around the chair back or dumbbells at chest height, press both hands straight forward until the arms are straight, then return slowly.",
+                steps: () => steps(3, 35, { rest: 60 })
+            },
+            {
+                name: "Seated band row",
+                sets: "3 × 10–12, 1 second squeeze",
+                desc: "Seated tall, a band anchored in front at chest height. Pull the hands to the lower ribs, elbows close to the body, squeeze the shoulder blades together for a second, then return slowly.",
+                steps: () => steps(3, 45, { rest: 60 })
+            },
+            {
+                name: "Seated band pulldown",
+                sets: "3 × 10–12",
+                desc: "Seated, a band anchored high (over a door). Start with the arms up, then pull the elbows down to the sides until the hands reach shoulder height, and return slowly.",
+                steps: () => steps(3, 35, { rest: 60 })
+            },
+            {
+                name: "Seated biceps curl",
+                sets: "3 × 10–12",
+                desc: "Seated, dumbbells or a band under the left foot. Elbows at the sides, curl the hands to the shoulders, and lower slowly.",
+                caution: "Anchor a band under the left foot, not the right.",
+                steps: () => steps(3, 35, { rest: 60 })
+            },
+            {
+                name: "Seated overhead triceps extension",
+                sets: "3 × 10–12",
+                desc: "Seated tall, one dumbbell held in both hands behind the head, elbows pointing up. Straighten the arms overhead, then lower slowly behind the head.",
+                steps: () => steps(3, 35, { rest: 60 })
+            },
+            {
+                name: "Grip squeeze",
+                sets: "3 × 30 seconds per hand",
+                desc: "Squeeze a soft ball or a rolled towel firmly and hold. It helps the hands cope with crutches.",
+                steps: () => steps(3, 30, { parts: ["Right hand", "Left hand"], rest: 30 })
+            }
+        ]
+    },
+    {
+        name: "Core",
+        note: `With the upper body: lying on the back with the legs resting, or seated. ${PROTECT_RULE}`,
+        exercises: [
+            {
+                name: "Curl-up, right leg straight",
+                sets: "3 × 8, 5 second hold",
+                desc: "On your back, right leg straight and resting, left knee bent with the foot flat, hands under the low back. Lift the head and shoulders just off the floor, keeping the neck long, hold 5 seconds, and lower.",
+                caution: "The right leg stays relaxed on the floor.",
+                steps: () => steps(3, 55, { rest: 45 })
+            },
+            {
+                name: "Seated Pallof press",
+                sets: "3 × 8 per side, 3 second hold",
+                desc: "Seated sideways to a band anchored at chest height, both hands holding it at the chest. Press the hands straight out, resist the band pulling you round, hold 3 seconds, and bring them back. Then face the other way.",
+                steps: () => steps(3, 40, { sides: true })
+            },
+            {
+                name: "Pelvic tilts",
+                sets: "10 reps, 3–5 second hold",
+                desc: "On your back, legs resting (knees bent only if comfortable). Tilt the pelvis to flatten the low back gently into the floor, hold 3–5 seconds, release.",
+                steps: () => steps(1, 60)
+            }
+        ]
+    },
+    {
+        name: "Left leg",
+        note: `With the upper body. The left hip works harder while the right is protected, and training one leg slows strength loss in the other. ${PROTECT_RULE}`,
+        exercises: [
+            {
+                name: "Seated knee extension, left",
+                sets: "3 × 10–12, 2 second hold",
+                desc: "Sit tall with a band from the left ankle to the chair leg behind, or an ankle weight. Straighten the left knee, hold 2 seconds, and lower slowly.",
+                steps: () => steps(3, 50, { rest: 45 })
+            },
+            {
+                name: "Hamstring curl lying face down, left",
+                sets: "3 × 10–12",
+                desc: "Lie face down, an ankle weight on the left ankle. Bend the left knee to bring the heel toward the buttock, and lower slowly. Keep the hips down.",
+                caution: "The right leg stays relaxed on the floor.",
+                steps: () => steps(3, 35, { rest: 45 })
+            }
+        ]
+    },
+    {
+        name: "Right leg, gentle",
+        note: "Daily, light effort, if her doctor agrees. No straight-leg raises or resisted hip movements.",
+        exercises: [
+            {
+                name: "Ankle pumps",
+                sets: "2 × 20",
+                desc: "Lying or seated, right leg resting. Point the foot away, then pull the toes toward you, steadily.",
+                steps: () => steps(2, 30, { rest: 15 })
+            },
+            {
+                name: "Thigh tightening",
+                sets: "10 × 5 seconds",
+                desc: "On your back, right leg straight. Tighten the front of the thigh to press the back of the knee gently into the floor, hold 5 seconds, relax 5 seconds.",
+                caution: "Light effort. The heel stays on the floor.",
+                steps: () => steps(1, 100)
+            },
+            {
+                name: "Buttock squeezes",
+                sets: "10 × 5 seconds, light",
+                desc: "On your back, legs resting. Gently squeeze the buttocks together, hold 5 seconds, relax 5 seconds.",
+                caution: "Light effort only; stop if it brings on groin pain.",
+                steps: () => steps(1, 100)
+            }
+        ]
+    },
+    {
+        name: "Breathing and pelvic floor",
+        note: "Daily, as before. Cat-cow, figure-4, butterfly lying down and child's pose are paused (see the paused sections).",
+        exercises: [
+            {
+                name: "Diaphragmatic breathing with pelvic floor drop",
+                sets: "5–10 minutes",
+                desc: "On your back, knees bent or legs resting. Breathe into the belly and lower ribs. On each inhale, let the pelvic floor soften and drop slightly, as if starting to pee.",
+                steps: () => steps(1, 300)
+            },
+            {
+                name: "Reverse Kegel",
+                sets: "10 reps",
+                desc: "A gentle bear-down and release, as if passing gas. Breathe in as you let go, then relax completely before the next one.",
+                steps: () => steps(1, 50)
+            }
+        ]
+    },
+    {
+        name: "Paused: Stretches",
+        note: `${PAUSED} Daily, gentle, never into a groin pinch. ${HIP_RULE}`,
         exercises: [
             {
                 name: "Half-kneeling hip flexor stretch",
@@ -52,21 +192,9 @@ const WORKOUT_SECTIONS = [
         ]
     },
     {
-        name: "Pelvic floor relaxation",
-        note: "Daily, gentle, never into pain. The goal is to relax the pelvic floor, not strengthen it: breathe into the pelvis throughout. Pelvic = pelvic floor only; Both = pelvic floor and hip. Skip for now: happy baby and deep squat (they break the 90° hip rule). Avoid: Kegels, clenching, holding urine for long periods, crunches, hovering over toilets. Extras: warm baths and a heating pad.",
+        name: "Paused: Pelvic floor extras",
+        note: "Paused on 6 November while the hip is protected: don't restart until her doctor clears loading. (Breathing and reverse Kegel continue, in Breathing and pelvic floor.) Daily, gentle, never into pain. The goal is to relax the pelvic floor, not strengthen it: breathe into the pelvis throughout. Pelvic = pelvic floor only; Both = pelvic floor and hip. Skip for now: happy baby and deep squat (they break the 90° hip rule). Avoid: Kegels, clenching, holding urine for long periods, crunches, hovering over toilets. Extras: warm baths and a heating pad.",
         exercises: [
-            {
-                name: "Diaphragmatic breathing with pelvic floor drop (Pelvic)",
-                sets: "5–10 minutes",
-                desc: "On your back, knees bent. Breathe into the belly and lower ribs. On each inhale, let the pelvic floor soften and drop slightly, as if starting to pee. Everything else builds on this.",
-                steps: () => steps(1, 300)
-            },
-            {
-                name: "Reverse Kegel (Pelvic)",
-                sets: "10 reps",
-                desc: "A gentle bear-down and release, as if passing gas. Breathe in as you let go, then relax completely before the next one.",
-                steps: () => steps(1, 50)
-            },
             {
                 name: "Cat-cow (Both)",
                 sets: "10 slow cycles",
@@ -97,8 +225,8 @@ const WORKOUT_SECTIONS = [
         ]
     },
     {
-        name: "Phase 1: Activate",
-        note: `Weeks 1–3, 3 times a week on alternate days, about 25 minutes. Move to Phase 2 only when this phase feels easy for a full week. ${PAIN_RULE}`,
+        name: "Paused: Phase 1: Activate",
+        note: `${PAUSED} Weeks 1–3, 3 times a week on alternate days, about 25 minutes. Move to Phase 2 only when this phase feels easy for a full week. ${PAIN_RULE}`,
         exercises: [
             {
                 name: "Isometric hip abduction",
@@ -140,8 +268,8 @@ const WORKOUT_SECTIONS = [
         ]
     },
     {
-        name: "Phase 2: Build",
-        note: `Weeks 4–7, 3 times a week on alternate days, about 25 minutes. Move to Phase 3 only when this phase feels easy for a full week. ${PAIN_RULE}`,
+        name: "Paused: Phase 2: Build",
+        note: `${PAUSED} Weeks 4–7, 3 times a week on alternate days, about 25 minutes. Move to Phase 3 only when this phase feels easy for a full week. ${PAIN_RULE}`,
         exercises: [
             {
                 name: "Single-leg bridge",
@@ -182,8 +310,8 @@ const WORKOUT_SECTIONS = [
         ]
     },
     {
-        name: "Phase 3: Load",
-        note: `Weeks 8–12, 3 times a week on alternate days, about 25 minutes. ${PAIN_RULE} Frog kick, breaststroke, tennis pivots and running wait until Phase 3 without flares.`,
+        name: "Paused: Phase 3: Load",
+        note: `${PAUSED} Weeks 8–12, 3 times a week on alternate days, about 25 minutes. ${PAIN_RULE} Frog kick, breaststroke, tennis pivots and running wait until Phase 3 without flares.`,
         exercises: [
             {
                 name: "Step-ups, low step",
@@ -227,8 +355,8 @@ const WORKOUT_SECTIONS = [
         ]
     },
     {
-        name: "Maintenance",
-        note: "After week 12: 2 times a week, about 15 minutes, one band and bodyweight only. Hip flexor stretch and 90/90 most days. Before tennis or running: bridges and leg swings as a warm-up. In a flare: back to Phase 1–2 for 2 weeks, then resume.",
+        name: "Paused: Maintenance",
+        note: "Paused on 6 November while the hip is protected: don't restart until her doctor clears loading. After week 12: 2 times a week, about 15 minutes, one band and bodyweight only. Hip flexor stretch and 90/90 most days. Before tennis or running: bridges and leg swings as a warm-up. In a flare: back to Phase 1–2 for 2 weeks, then resume.",
         exercises: [
             {
                 name: "Single-leg bridge",
@@ -279,10 +407,8 @@ const WORKOUT_SECTIONS = [
     }
 ];
 
-// Phases go by readiness, not only the calendar: the header shows the week and the phase the calendar suggests.
+// The header shows the week of the protected-hip plan. The paused plan's phases (weeks 1–3, 4–7, 8–12,
+// then maintenance) restart from a new PLAN_START once her doctor clears loading.
 const WORKOUT_PHASES = [
-    { upTo: 3, name: "Weeks 1–3: Phase 1, activate" },
-    { upTo: 7, name: "Weeks 4–7: Phase 2, build" },
-    { upTo: 12, name: "Weeks 8–12: Phase 3, load" },
-    { upTo: Infinity, name: "After week 12: maintenance" }
+    { upTo: Infinity, name: "Now: protected hip" }
 ];
