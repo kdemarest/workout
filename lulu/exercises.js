@@ -154,6 +154,38 @@ const WORKOUT_SECTIONS = [
         ]
     },
     {
+        name: "Crutches and shoulders",
+        note: "With the upper body, 3 times a week. Crutches with 30–50% of your weight on the right leg (50–80 lb). The crutches carry the rest through the wrists and shoulders, so use the wheelchair beyond short trips, and let Ken push for long distances. Handle at the wrist crease with the arms hanging; cuff 1–1.5 inches below the elbow. Don't hop on the left leg. Shoulder pain, an aching elbow or tingling fingers: use the wheelchair more until it settles.",
+        exercises: [
+            {
+                name: "Band external rotation",
+                sets: "3 × 12–15 per arm",
+                desc: "Seated tall, a band anchored at elbow height to the side. Elbow bent 90° and tucked against the ribs (a rolled towel between them helps). Rotate the forearm outward, away from the belly, keeping the elbow in place, then return slowly.",
+                steps: () => steps(3, 40, { sides: true, rest: 45 })
+            },
+            {
+                name: "Band pull-apart",
+                sets: "3 × 12–15",
+                desc: "Seated tall, a band held in both hands in front at shoulder height, arms straight. Pull the hands apart until the band touches the chest, squeezing the shoulder blades back and down, then return slowly.",
+                caution: "Keep the shoulders down, away from the ears.",
+                steps: () => steps(3, 40, { rest: 45 })
+            }
+        ]
+    },
+    {
+        name: "Cardio",
+        note: "3 times a week or more. Also good: an arm bike if there's a gym; crutch walking, within the crutch limits; the pool and any cycling only with the doctor's OK. Food: sitting most of the day you need about 1,800 kcal a day, against 2,500 or more on the Camino. Protein at every meal, about 85–110 g a day, and eat enough for the bone to heal.",
+        exercises: [
+            {
+                name: "Seated boxing intervals",
+                sets: "10–15 rounds: 30 seconds hard, 30 seconds easy",
+                desc: "Sit on the front of a sturdy chair, back tall. Punch fast: straight punches, hooks and uppercuts, turning from the waist. In the easy half, keep the arms moving gently or rest.",
+                caution: "Feet resting on the floor: don't push or brace through the right leg.",
+                steps: () => steps(12, 30, { rest: 30 })
+            }
+        ]
+    },
+    {
         name: "Paused: Stretches",
         note: `${PAUSED} Daily, gentle, never into a groin pinch. ${HIP_RULE}`,
         exercises: [
