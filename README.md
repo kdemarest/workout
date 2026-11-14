@@ -3,14 +3,14 @@
 Phone pages for timed exercise plans. Pick an exercise, read it, tap **Go**: it counts down the current step (a set, a side, a hold, or a rest between sets) and beeps once when time is up, then moves to the next step.
 
 - **Ken:** https://kdemarest.github.io/workout/ken/, from the Google Doc "Ken Arms".
-- **Lulu:** https://kdemarest.github.io/workout/lulu/, from the Google Doc "Rehab Lulu".
+- **Lulu:** https://kdemarest.github.io/workout/lulu/, from her plan in the private Medical repo (`LuluHip/Lulu Hip Rehab.md`). The Google Doc "Rehab Lulu" stopped being updated on 8 November 2026 and says so at its top.
 
 On an iPhone, open the page in Safari, then Share → Add to Home Screen: it opens full-screen like an app and works offline after the first visit. Changes reach it the next time it opens with a connection.
 
 ## Files
 
 - `app.js`, `app.css`: the page, shared by everyone. `plan.js`: the `steps()` and `pair()` helpers and the format of an exercises file.
-- `<person>/exercises.js`: that person's plan, copied from their doc, which is the master copy: update this file when the doc changes. Rep-based sets are timed from their tempo.
+- `<person>/exercises.js`: that person's plan, copied from their plan (Ken's Google Doc; Lulu's `Lulu Hip Rehab.md`), which is the master copy: update this file when the plan changes. Rep-based sets are timed from their tempo.
 - `<person>/index.html`, `manifest.webmanifest`, `icon-*.png`: that person's page and home-screen app. The `index.html` files are the same apart from the title.
 - `sw.js`: offline support (network first, cache when offline).
 - `index.html`: a list of the people.

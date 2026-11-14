@@ -1,5 +1,6 @@
-// Lulu's exercises, from the Google Doc "Rehab Lulu" (the master copy for what to do and how much;
-// update this file when the doc changes). The doc lists the exercises without instructions, so the
+// Lulu's exercises, from her plan, Medical/LuluHip/Lulu Hip Rehab.md (the master copy for what to do and
+// how much since 14 November 2026; the Google Doc "Rehab Lulu" stopped being updated on 8 November).
+// Update this file when the plan changes. The doc lists the exercises without instructions, so the
 // "desc" text here (how to do each one) is written for the app, within the doc's rules.
 // Format and the steps() helper: ../plan.js. Rep-based sets are timed from their tempo, rounded to 5 seconds.
 /* exported APP_TITLE, CAUTION_LABEL, PLAN_START, WORKOUT_SECTIONS, WORKOUT_PHASES */
@@ -12,6 +13,8 @@ const PLAN_START = "2026-11-07"; // "Protected hip" started 7 November 2026 (the
 const PAIN_RULE = "Pain up to 3/10 is fine if it has settled by the next morning; worse the next morning, drop back a step.";
 const HIP_RULE = "Avoid deep hip flexion past 90°, knee-to-chest, deep squats and forcing internal rotation.";
 const PROTECT_RULE = "Protected hip: no force through the right hip, from body weight or its own muscles. Stop if the groin pain gets worse, and tell the doctor.";
+// Ken, 14 November 2026: getting down to the floor and up on crutches loads the right hip.
+const BED_RULE = "Lying exercises on a firm bed, not the floor: getting down to the floor and up again on crutches loads the right hip.";
 const PAUSED = "Paused on 6 November while the hip is protected: don't restart until her doctor clears loading.";
 
 const WORKOUT_SECTIONS = [
@@ -67,7 +70,7 @@ const WORKOUT_SECTIONS = [
     },
     {
         name: "Core",
-        note: `With the upper body: lying on the back with the legs resting, or seated. ${PROTECT_RULE}`,
+        note: `With the upper body: lying on the back with the legs resting, or seated. ${BED_RULE} ${PROTECT_RULE}`,
         exercises: [
             {
                 name: "Curl-up, right leg straight",
@@ -92,7 +95,7 @@ const WORKOUT_SECTIONS = [
     },
     {
         name: "Left leg",
-        note: `With the upper body. The left hip works harder while the right is protected, and training one leg slows strength loss in the other. ${PROTECT_RULE}`,
+        note: `With the upper body. The left hip works harder while the right is protected, and training one leg slows strength loss in the other. ${BED_RULE} ${PROTECT_RULE}`,
         exercises: [
             {
                 name: "Seated knee extension, left",
@@ -103,15 +106,15 @@ const WORKOUT_SECTIONS = [
             {
                 name: "Hamstring curl lying face down, left",
                 sets: "3 × 10–12",
-                desc: "Lie face down, an ankle weight on the left ankle. Bend the left knee to bring the heel toward the buttock, and lower slowly. Keep the hips down.",
-                caution: "The right leg stays relaxed on the floor.",
+                desc: "Lie face down on a bed, an ankle weight on the left ankle. Bend the left knee to bring the heel toward the buttock, and lower slowly. Keep the hips down.",
+                caution: "Roll over with the legs together, turning as one piece. The right leg stays relaxed.",
                 steps: () => steps(3, 35, { rest: 45 })
             }
         ]
     },
     {
         name: "Right leg, gentle",
-        note: "Daily, light effort, if her doctor agrees. No straight-leg raises or resisted hip movements.",
+        note: `Daily, light effort, if her doctor agrees. No straight-leg raises or resisted hip movements. ${BED_RULE}`,
         exercises: [
             {
                 name: "Ankle pumps",
@@ -130,14 +133,14 @@ const WORKOUT_SECTIONS = [
                 name: "Buttock squeezes",
                 sets: "10 × 5 seconds, light",
                 desc: "On your back, legs resting. Gently squeeze the buttocks together, hold 5 seconds, relax 5 seconds.",
-                caution: "Light effort only; stop if it brings on groin pain.",
+                caution: "Light: about a quarter effort. Squeezes press the joint harder than they seem. Stop if it brings on groin pain.",
                 steps: () => steps(1, 100)
             }
         ]
     },
     {
         name: "Breathing and pelvic floor",
-        note: "Daily, as before. Cat-cow, figure-4, butterfly lying down and child's pose are paused (see the paused sections).",
+        note: `Daily, as before. ${BED_RULE} Cat-cow, figure-4, butterfly lying down and child's pose are paused (see the paused sections).`,
         exercises: [
             {
                 name: "Diaphragmatic breathing with pelvic floor drop",
@@ -155,7 +158,7 @@ const WORKOUT_SECTIONS = [
     },
     {
         name: "Crutches and shoulders",
-        note: "With the upper body, 3 times a week. Crutches with 30–50% of your weight on the right leg (50–80 lb). The crutches carry the rest through the wrists and shoulders, so use the wheelchair beyond short trips, and let Ken push for long distances. Handle at the wrist crease with the arms hanging; cuff 1–1.5 inches below the elbow. Don't hop on the left leg. Shoulder pain, an aching elbow or tingling fingers: use the wheelchair more until it settles.",
+        note: "With the upper body, 3 times a week. Crutches with 30–50% of your weight on the right leg (50–80 lb). The crutches carry the rest through the wrists and shoulders, so use the wheelchair beyond short trips, and let Ken push for long distances. Handle at the wrist crease with the arms hanging; cuff 1–1.5 inches below the elbow. Don't hop on the left leg. Sit on high seats, hips above the knees, and use a raised toilet seat: rising from a low seat is one of the hardest loads on the hip. Stand up on the left leg, pushing with the arms. Shoulder pain, an aching elbow or tingling fingers: use the wheelchair more until it settles.",
         exercises: [
             {
                 name: "Band external rotation",
